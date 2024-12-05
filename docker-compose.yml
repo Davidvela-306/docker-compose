@@ -1,0 +1,57 @@
+# Indicar todos los contenedores que se desean ejecutar (Necesito una imagen)
+version: "3"
+# (Dentro de services se indican todos los contenedores que se desean ejecutar, en cada uno se indica la imagen que se desea ejecutar)
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - 8081:80 # host:container
+  apache:
+    image: httpd:latest
+    container_name: apache
+    ports:
+      - 8082:80
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    ports:
+      - 8083:80
+      
+  # servidor:
+  #   image: servidor:latest
+  #   container_name: servidor
+  #   ports:
+  #     - 8084:80
+
+# Para ejecutar el archivo de python:
+  servidor:
+    build:
+      context: ./servidor
+      dockerfile: Dockerfile
+    container_name: servidor
+    ports:
+      - 8084:5002
+
+#  docker-compose up --build (Para construir la imagen)
+  servidor2:
+      build:
+        context: ./servidor2
+        dockerfile: Dockerfile
+      container_name: servidor2
+      ports:
+        - 8085:5003
+      volumes: # volumes individual
+      # Ruta del host: / ruta contenedor
+      - ./datos:/app/data
+  servidor3:
+      build:
+        context: ./servidor3
+        dockerfile: Dockerfile
+      container_name: servidor3
+      ports:
+        - 8086:5004
+
+#todos los volumenes (cuando queremos informacion persistente en el contenedor o en el host)
+volumes:
+  datos:
